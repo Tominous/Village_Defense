@@ -172,6 +172,18 @@
       <scope>system</scope>
       <systemPath>${project.basedir}/lib/HolographicDisplays.jar</systemPath>
     </dependency>
+      <dependency>
+          <groupId>pl.plajerlair</groupId>
+          <artifactId>plcore</artifactId>
+          <version>2.0.0</version>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>pl.plajerlair</groupId>
+          <artifactId>plcore</artifactId>
+          <version>2.0.0</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
   <distributionManagement>
     <repository>

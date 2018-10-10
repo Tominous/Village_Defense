@@ -227,42 +227,20 @@ public class Main extends JavaPlugin {
       setupFiles();
       LanguageMigrator.configUpdate();
       LanguageMigrator.languageFileUpdate();
-      initializeClasses();
-
-      if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
-        String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
-        try {
-          boolean check = UpdateChecker.checkUpdate(this, currentVersion, 41869);
-          if (check) {
-            String latestVersion = "v" + UpdateChecker.getLatestVersion();
-            if (latestVersion.contains("b")) {
-              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
-              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", currentVersion)
-                  .replace("%new%", latestVersion));
-            } else {
-              MessageUtils.updateIsHere();
-              Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Village Defense plugin is outdated! Download it to keep with latest changes and fixes.");
-              Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
-              Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + currentVersion + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + latestVersion);
-            }
-          }
-        } catch (Exception ignored) {
+        if (databaseActivated) {
+            FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
+            database = new MySQLDatabase(this, config.getString("address"), config.getString("user"), config.getString("password"),
+                    config.getInt("min-connections"), config.getInt("max-connections"));
+            mySQLManager = new MySQLManager(this);
+        } else {
+            fileStats = new FileStats(this);
         }
-      }
-
+      initializeClasses();
       STARTING_TIMER_TIME = getConfig().getInt("Starting-Waiting-Time", 60);
       MINI_ZOMBIE_SPEED = (float) getConfig().getDouble("Mini-Zombie-Speed", 2.0);
       ZOMBIE_SPEED = (float) getConfig().getDouble("Zombie-Speed", 1.3);
       databaseActivated = getConfig().getBoolean("DatabaseActivated", false);
       inventoryManagerEnabled = getConfig().getBoolean("InventoryManager", false);
-      if (databaseActivated) {
-        FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
-        database = new MySQLDatabase(this, config.getString("address"), config.getString("user"), config.getString("password"),
-            config.getInt("min-connections"), config.getInt("max-connections"));
-        mySQLManager = new MySQLManager(this);
-      } else {
-        fileStats = new FileStats(this);
-      }
       bossbarEnabled = getConfig().getBoolean("Bossbar-Enabled", true);
 
       DoorBreakListener listener = new DoorBreakListener();
@@ -295,6 +273,27 @@ public class Main extends JavaPlugin {
       }
       StatsStorage.plugin = this;
       PermissionsManager.init();
+
+        if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+            String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
+            try {
+                boolean check = UpdateChecker.checkUpdate(this, currentVersion, 41869);
+                if (check) {
+                    String latestVersion = "v" + UpdateChecker.getLatestVersion();
+                    if (latestVersion.contains("b")) {
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", currentVersion)
+                                .replace("%new%", latestVersion));
+                    } else {
+                        MessageUtils.updateIsHere();
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Village Defense plugin is outdated! Download it to keep with latest changes and fixes.");
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + currentVersion + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + latestVersion);
+                    }
+                }
+            } catch (Exception ignored) {
+            }
+        }
       debug(LogLevel.INFO, "Main setup done");
     } catch (Exception ex) {
       new ReportedException(this, ex);
