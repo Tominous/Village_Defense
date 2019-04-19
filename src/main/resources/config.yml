@@ -24,7 +24,7 @@ Bossbar-Enabled: true
 # You STILL need to use external addon for HUB server game signs
 # Village Defense doesn't offer that addon.
 # Check here for more info: https://wiki.plajer.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official
-BungeeActivated: false
+BungeeActivated: true
 
 # Enable Inventory Manager for your games? (VERY USEFUL feature for MULTI ARENA)
 # This saves inventory of players and restores it after player leaves arena.
@@ -64,7 +64,7 @@ Whitelisted-Commands:
 # Enable this option when you're using MySQL, otherwise it won't work.
 # Be careful when changing this because there is NO migrator between
 # flat file and MySQL for player stats.
-DatabaseActivated: false
+DatabaseActivated: true
 
 # How many seconds game should take to start.
 Starting-Waiting-Time: 60
@@ -79,7 +79,7 @@ Mini-Zombie-Speed: 2.0
 Zombie-Speed: 1.3
 
 # Enable in game rewards? See rewards.yml for more...
-Rewards-Enabled: false
+Rewards-Enabled: true
 
 # Enable in game (eg. '[KIT][LEVEL] Plajer: hey') special formatting?
 # Formatting is configurable in language.yml
@@ -191,7 +191,7 @@ Update-Notifier:
   Notify-Beta-Versions: true
 
 # Should plugin send 'debug spam' to console? IT CAN HELP IF THERE IS SOME WEIRD BEHAVIOUR OCCURRING CAUSED BY THIS PLUGIN
-Debug: false
+Debug: true
 
 # Don't modify.
 Version: 8
